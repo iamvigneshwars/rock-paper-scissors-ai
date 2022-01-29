@@ -7,11 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="static/css/style.css">
-    <title>Document</title>
+    <title>Rock Paper Scissor</title>
 </head>
 
 <body>
 
+    <!--Navigaton bar-->
     <nav class="navbar navbar-dark bg-dark" aria-label="First navbar example">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Never expand</a>
@@ -52,74 +53,91 @@
 
     <div class="container">
 
+        <br><br>   
+         <div class="float-right">
 
-        <div class="container-fluid">
-            <p class="text-center">ROUND</p>
-            <br>
-            <div class="row">
-                <div class="col">
-                    <p class="fw-light text-center">WIN</p>
-                </div>
-                <div class="col">
-                    <p class="fw-light text-center">TIE</p>
-                </div>
-                <div class="col">
-                    <p class="fw-light text-center">WIN</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p class="text-center">0</p>
-                </div>
-                <div class="col">
-                    <p class="text-center">0</p>
-                </div>
-                <div class="col">
-                    <p class="text-center">0</p>
-                </div>
-            </div>
-            <br><br>
-            <div class="row">
-                <div class="col">
-                    <div class="mx-auto" style="width: 200px;">
-                        <img class="rounded float-start" id="paper" src="static/images/rest.png" hight=240 width=240
-                            alt="" onclick="rpsGame(this)">
-                    </div>
-                </div>
-                <div class="col">
-                </div>
-                <div class="col">
-
-                    <div class="mx-auto" style="width: 200px;">
-
-
-                        <img class="rounded float-end" id="paper" src="static/images/paper_ai.png" alt=""
-                            onclick="rpsGame(this)">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" >
+                            <label class="form-check-label" for="flexSwitchCheckChecked">AI</label>
+                        </div>
 
                     </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="h-100 p-5 text-white bg-dark rounded-3">
+
+                
+
+
+                    <div class="container-md">
+                        <p id="round" class="text-center">ROUND 1</p>
+
+                        <div class="row">
+                            <div class="col">
+                                <p class="fw-light text-center">WIN <small>(you</small></p>
+                            </div>
+                            <div class="col">
+                                <p class="fw-light text-center">TIE</p>
+                            </div>
+                            <div class="col">
+                                <p class="fw-light text-center">WIN</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="text-center">0</p>
+                            </div>
+                            <div class="col">
+                                <p class="text-center">0</p>
+                            </div>
+                            <div class="col">
+                                <p class="text-center">0</p>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="row ">
+                            <div class="col ">
+                                <div class="mx-auto" style="width: 250px;">
+                                    <img class="img-fluid float-start" id="paper" src="static/images/rest.png" alt=""
+                                        onclick="rpsGame(this)">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <img src="static/images/doge.png" class="rounded mx-auto d-block" alt="..." hight="90"
+                                    width="90">
+                            </div>
+                            <div class="col ">
+                                <div class="mx-auto" style="width: 250px;">
+                                    <img class="img-fluid float-start" id="paper" src="static/images/rest_ai.png"
+                                        hight=240 width=240 alt="" onclick="rpsGame(this)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <br>
+                    <br>
+
+                    <div class="mx-auto" style="width: 250px;">
+                        <button class="btn btn-default">
+                            <img src="static/images/rock_icon.png" height=50 width=50 alt="" onclick="rpsGame(this)">
+                        </button>
+                        <button class="btn btn-default">
+                            <img src="static/images/paper_icon.png" height=50 width=50 alt="" onclick="rpsGame(this)">
+                        </button>
+                        <button class="btn btn-default">
+                            <img src="static/images/scissors_icon.png" height=50 width=50 alt=""
+                                onclick="rpsGame(this)">
+                        </button>
+                    </div>
+
                 </div>
-            </div>
-        </div>
 
-        <br><br>
-
-            <div class="mx-auto" style="width: 250px;">
-                    <button class="btn btn-default">
-                        <img src="static/images/rock_icon.png" height=50 width=50 alt="" onclick="rpsGame(this)">
-                    </button>
-                    <button class="btn btn-default">
-                        <img src="static/images/paper_icon.png" height=50 width=50 alt="" onclick="rpsGame(this)">
-                    </button>
-                    <button class="btn btn-default">
-                        <img src="static/images/scissors_icon.png" height=50 width=50 alt="" onclick="rpsGame(this)">
-                    </button>
-            </div>    
-
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                    crossorigin="anonymous"></script>
 </body>
 
 </html>
