@@ -15,20 +15,20 @@ function sleep(ms) {
   }
 
 
-function decideWinner(user_choice, ai_choice){
+function decideWinner(player_choice, ai_choice){
     // TIE situation
-    if (user_choice == ai_choice) return 0;
+    if (player_choice == ai_choice) return 0;
 
     // Player win situations
-    if (user_choice == "rock" && ai_choice == "scissors") return 1;
-    if (user_choice == "paper" && ai_choice == "rock") return 1;
-    if (user_choice == "scissors" && ai_choice == "paper") return 1;
+    if (player_choice == "rock" && ai_choice == "scissor") return 1;
+    if (player_choice == "paper" && ai_choice == "rock") return 1;
+    if (player_choice == "scissor" && ai_choice == "paper") return 1;
 
     // Player lose situations
 
-    if (user_choice == "scissors" && ai_choice == "rock") return 2;
-    if (user_choice == "rock" && ai_choice == "paper") return 2;
-    if (user_choice == "paper" && ai_choice == "scissors") return 2;
+    if (player_choice == "scissor" && ai_choice == "rock") return 2;
+    if (player_choice == "rock" && ai_choice == "paper") return 2;
+    if (player_choice == "paper" && ai_choice == "scissor") return 2;
 
 }
 
@@ -36,9 +36,9 @@ function decideWinner(user_choice, ai_choice){
 function rpsGame(userInput){
 
     // Choises that the user and AI can make
-    var choices = ["scissors", "rock", "paper"];
+    var choices = ["scissor", "rock", "paper"];
     // Get the user choice from the button clicked
-    var user_choice = document.getElementById(userInput.id).id;
+    var player_choice = document.getElementById(userInput.id).id;
 
     var decision = ["TIE", "WIN", "LOSE"];
     // Generate a random choice for the AI 
@@ -47,12 +47,12 @@ function rpsGame(userInput){
 
 
     // Decide the winner based on the choices (0: TIE, 1: WIN, 2: LOSE)
-    var winner = decideWinner(user_choice, ai_choice)
+    var winner = decideWinner(player_choice, ai_choice)
     // Increament the score with corresponding result
     SCORES[decision[winner]]++;
 
 
-    console.log("PLAYER: " , user_choice,"AI: " , ai_choice)
+    console.log("PLAYER: " , player_choice,"AI: " , ai_choice)
     console.log("Decision: ", decision[winner]);
     console.log("Score: ", SCORES[decision[winner]]);
 
@@ -67,14 +67,15 @@ function rpsGame(userInput){
         // let player_prev_moves = PLAYER_MOVES.slice
         // console.log(PLAYER_MOVES.length - i+1);
         console.log(PLAYER_MOVES[PLAYER_MOVES.length - i])
-        document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i] + "  VS  " + AI_MOVES[AI_MOVES.length - i];
+        document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i].toUpperCase() + "  vs  " + AI_MOVES[AI_MOVES.length - i].toUpperCase();
+         
         
         
 
     }
 
 
-    PLAYER_MOVES.push(user_choice);
+    PLAYER_MOVES.push(player_choice);
     AI_MOVES.push(ai_choice);
    
     // Update Round 
@@ -89,7 +90,7 @@ function rpsGame(userInput){
 
     // Update Player image
     document.getElementById("user_play").src = "static/images/rest.png"
-    sleep(100).then(() => { document.getElementById("user_play").src = "static/images/" + user_choice + ".png"; });
+    sleep(100).then(() => { document.getElementById("user_play").src = "static/images/" + player_choice + ".png"; });
 
     // Update AI image
     document.getElementById("ai_play").src = "static/images/rest_ai.png";
