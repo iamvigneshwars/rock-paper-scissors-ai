@@ -72,5 +72,5 @@ function rpsGame(userInput){
     sleep(100).then(() => { document.getElementById("ai_play").src = "static/images/" + ai_choice +"_ai" + ".png"; });
 
     // Update the DOGE emoji
-    document.getElementById("doge").src = "static/images/doge_" + decision[winner]  + ".png"
+    // document.getElementById("doge").src = "static/images/doge_" + decision[winner]  + ".png"
 }
