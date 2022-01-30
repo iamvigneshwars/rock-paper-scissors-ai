@@ -4,6 +4,9 @@ var SCORES = {
     "LOSE" : 0 
 }
 
+var PLAYER_MOVES = [];
+var AI_MOVES = [];
+
 var ROUND = 0;
 
 // Delay inbetween plays
@@ -42,17 +45,38 @@ function rpsGame(userInput){
     const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
     var ai_choice = choices[random(0, 3)];
 
+
     // Decide the winner based on the choices (0: TIE, 1: WIN, 2: LOSE)
     var winner = decideWinner(user_choice, ai_choice)
     // Increament the score with corresponding result
     SCORES[decision[winner]]++;
 
 
-    console.log(user_choice, ai_choice)
-    console.log(decision[winner]);
-    console.log("Score: ", decision[winner], SCORES[decision[winner]]);
+    console.log("PLAYER: " , user_choice,"AI: " , ai_choice)
+    console.log("Decision: ", decision[winner]);
+    console.log("Score: ", SCORES[decision[winner]]);
+
+    // Store player and AI choices
+    // if (PLAYER_MOVES.length >= 1){
+
+    //         console.log("Last Move: ", PLAYER_MOVES.slice(-1)[0])
+    //     }
+
+    for (let i = 1; i <= PLAYER_MOVES.length && i <= 5; i++){
+
+        // let player_prev_moves = PLAYER_MOVES.slice
+        // console.log(PLAYER_MOVES.length - i+1);
+        console.log(PLAYER_MOVES[PLAYER_MOVES.length - i])
+        document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i] + "  VS  " + AI_MOVES[AI_MOVES.length - i];
+        
+        
+
+    }
 
 
+    PLAYER_MOVES.push(user_choice);
+    AI_MOVES.push(ai_choice);
+   
     // Update Round 
     ROUND++;
     document.getElementById("round").innerHTML = "ROUND " + ROUND;
@@ -71,6 +95,5 @@ function rpsGame(userInput){
     document.getElementById("ai_play").src = "static/images/rest_ai.png";
     sleep(100).then(() => { document.getElementById("ai_play").src = "static/images/" + ai_choice +"_ai" + ".png"; });
 
-    // Update the DOGE emoji
-    // document.getElementById("doge").src = "static/images/doge_" + decision[winner]  + ".png"
+
 }
