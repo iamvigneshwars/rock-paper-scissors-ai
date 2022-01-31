@@ -4,6 +4,7 @@ var SCORES = {
     "LOSE" : 0 
 }
 
+var RESULTS = [];
 var PLAYER_MOVES = [];
 var AI_MOVES = [];
 

@@ -1,5 +1,19 @@
- .container {
+ .gamecontainer {
   padding: 10px 0 10px; 
   max-width: 500px;
   margin: auto;
+}
+
+/* body {
+  background-color: rgb(213, 216, 216);
+} */
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /* background-color: red; */
+  /* color: white; */
+  text-align: center;
 }
