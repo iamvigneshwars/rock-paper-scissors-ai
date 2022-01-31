@@ -63,14 +63,11 @@ function rpsGame(userInput){
     //     }
 
     for (let i = 1; i <= PLAYER_MOVES.length && i <= 5; i++){
-
-        // let player_prev_moves = PLAYER_MOVES.slice
-        // console.log(PLAYER_MOVES.length - i+1);
+       
         console.log(PLAYER_MOVES[PLAYER_MOVES.length - i])
-        document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i].toUpperCase() + "  vs  " + AI_MOVES[AI_MOVES.length - i].toUpperCase();
-         
-        
-        
+        document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i].toUpperCase() 
+                                                        + "  vs  " 
+                                                        + AI_MOVES[AI_MOVES.length - i].toUpperCase();
 
     }
 
@@ -96,5 +93,35 @@ function rpsGame(userInput){
     document.getElementById("ai_play").src = "static/images/rest_ai.png";
     sleep(100).then(() => { document.getElementById("ai_play").src = "static/images/" + ai_choice +"_ai" + ".png"; });
 
+    // Update Result message
+    if (winner == 1){
+        document.getElementById("result_message").innerHTML = "You Won!";
+        document.getElementById("result_message").style = "color:#51ff00";
+    }
+
+    if (winner == 2){
+        document.getElementById("result_message").innerHTML = "You Lost!";
+        document.getElementById("result_message").style = "color:#ff0000";
+
+    }
+
+    if (winner == 0){
+        document.getElementById("result_message").innerHTML = "Ahh! that's a Tie";
+        document.getElementById("result_message").style = "color:#ffee00";
+
+    }
+
+    
 
 }
+
+
+// freq_dist_win = { 'rr': 1, 'rp': 1, 'rs': 1, 'pr': 1, 'pp': 1, 'ps': 1, 'sr': 1, 'sp': 1, 'ss': 1 }
+// freq_dist_lose = { 'rr': 1, 'rp': 1, 'rs': 1, 'pr': 1, 'pp': 1, 'ps': 1, 'sr': 1, 'sp': 1, 'ss': 1 }
+// freq_dist_tie = { 'rr': 1, 'rp': 1, 'rs': 1, 'pr': 1, 'pp': 1, 'ps': 1, 'sr': 1, 'sp': 1, 'ss': 1 }
+
+// transition_win = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+// transition_lose = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+// transition_tie = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
+// console.log(transition_lose);
