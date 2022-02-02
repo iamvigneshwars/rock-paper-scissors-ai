@@ -101,6 +101,31 @@ function decideWinner(player_choice, ai_choice){
 
 }
 
+
+function updateFreqDist(previous_choice, current_choice, previous_result){
+
+
+    // If the player had won, lost or tied the previous round, update the 
+    // frequence of 
+    if (previous_result == "WIN"){
+        FREQ_WIN[previous_choice + current_choice]++;
+    }
+
+    if (previous_result == "LOSE"){
+        FREQ_LOSE[previous_choice + current_choice]++;
+    }
+
+    if (previous_result == "TIE"){
+        FREQ_TIE[previous_choice + current_choice]++;
+    }
+}
+
+function updateTransitionTable(previous_result){
+
+
+}
+
+
 // main function
 function rpsGame(userInput){
 
@@ -117,13 +142,23 @@ function rpsGame(userInput){
     SCORES[decision]++;
 
 
-    console.log(decision);
+    // console.log(decision);
 
+    if (PLAYER_MOVES.length > 0){
 
-    buildTransitionTable()
+        let previous_choice = PLAYER_MOVES.slice(-1)[0];
+        let previous_result = RESULTS.slice(-1)[0];
+        updateFreqDist(previous_choice, player_choice, previous_result);
+        updateTransitionTable(previous_result);
+    }
 
-    // UPDATE FRONTEND
-    
+    RESULTS.push(decision);
+    console.log("WIN" , FREQ_WIN);
+    console.log("LOSE" , FREQ_LOSE);
+    console.log("TIE" , FREQ_TIE);
+    console.log("--------------------") 
+
+    //------------------- UPDATE FRONTEND --------------------//
     // Update Last Five moves.
     for (let i = 1; i <= PLAYER_MOVES.length && i <= 5; i++){
         document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i].toUpperCase() 
@@ -170,11 +205,7 @@ function rpsGame(userInput){
 
     }
 
-    
 
 }
 
 
-
-
-// console.log(transition_lose);
