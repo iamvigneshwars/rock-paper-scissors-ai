@@ -199,8 +199,6 @@ function rpsGame(userInput){
         ai_choice = CHOICES[random(0, 3)];
     }
 
-
-
     var RPSprobs = [1/3, 1/3, 1/3];
 
     if (PLAYER_MOVES.length > 0){
@@ -218,18 +216,15 @@ function rpsGame(userInput){
         RPSprobs[0] = transition_table[index[previous_choice]][0];
         RPSprobs[1] = transition_table[index[previous_choice]][1];
         RPSprobs[2] = transition_table[index[previous_choice]][2];
+        var predicted_move = RPSprobs.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
 
-        let RangeR = RPSprobs[0] * 100;
-        let RangeP = RPSprobs[1] * 100 + RangeR;
 
-        if (ai_choice <= RangeR){
+        if (predicted_move == 0)
             ai_choice = 'paper';
-        }
-        else if (ai_choice <= RangeP){
+        else if (predicted_move == 1)
             ai_choice = 'scissor';
-        }
-        else ai_choice = 'rock';
-
+        else
+            ai_choice = 'rock';
 
     }
     // Decide the winner based on the CHOICES (0: TIE, 1: WIN, 2: LOSE)
