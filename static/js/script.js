@@ -53,7 +53,6 @@ const FREQ_TIE = {
     'scissorscissor' : 1, 
 }
 
-
 // Transition Probablities
 //     r  p  s
 //  r [0, 0, 0]
@@ -61,7 +60,7 @@ const FREQ_TIE = {
 //  s [0, 0, 0]
 
 // The transition probablities of states if the player had won the previous round.
-const TRANSITION_WIN = [ 
+var TRANSITION_WIN = [ 
     [0, 0, 0], 
     [0, 0, 0],
     [0, 0, 0]
@@ -122,7 +121,65 @@ function updateFreqDist(previous_choice, current_choice, previous_result){
 
 function updateTransitionTable(previous_result){
 
+    // Build transition table if player won the previous round.
+    if (previous_result == "WIN"){
+        let rock = FREQ_WIN['rockrock'] + FREQ_WIN['rockpaper'] + FREQ_WIN['rockscissor'];
+        let paper = FREQ_WIN['paperrock'] + FREQ_WIN['paperpaper'] + FREQ_WIN['paperscissor'];
+        let scissor = FREQ_WIN['scissorrock'] + FREQ_WIN['scissorpaper'] + FREQ_WIN['scissorscissor'];
+        let index = 0; 
+        for (let row = 0; row < 3; row++){
+            for (let col = 0; col < 3; col++){
+                if (Math.floor(index++ % 3) == 0)
+                    TRANSITION_WIN[row][col] = FREQ_WIN[Object.keys(FREQ_WIN)[index]] / rock;
 
+                if (Math.floor(index++ % 3) == 1)
+                    TRANSITION_WIN[row][col] = FREQ_WIN[Object.keys(FREQ_WIN)[index]] / paper;
+
+                if (Math.floor(index++ % 3) == 2)
+                    TRANSITION_WIN[row][col] = FREQ_WIN[Object.keys(FREQ_WIN)[index]] / scissor;
+            }
+        }
+    }
+    
+    // Build transition table if player lost the previous round.
+    else if (previous_result == "LOSE"){
+        let rock = FREQ_LOSE['rockrock'] + FREQ_LOSE['rockpaper'] + FREQ_LOSE['rockscissor'];
+        let paper = FREQ_LOSE['paperrock'] + FREQ_LOSE['paperpaper'] + FREQ_LOSE['paperscissor'];
+        let scissor = FREQ_LOSE['scissorrock'] + FREQ_LOSE['scissorpaper'] + FREQ_LOSE['scissorscissor'];
+        let index = 0;
+        for (let row = 0; row < 3; row++){
+            for (let col = 0; col < 3; col++){
+                if (Math.floor(index++ % 3) == 0)
+                    TRANSITION_LOSE[row][col] = FREQ_LOSE[Object.keys(FREQ_LOSE)[index]] / rock;
+
+                if (Math.floor(index++ % 3) == 1)
+                    TRANSITION_LOSE[row][col] = FREQ_LOSE[Object.keys(FREQ_LOSE)[index]] / paper;
+
+                if (Math.floor(index++ % 3) == 2)
+                    TRANSITION_LOSE[row][col] = FREQ_LOSE[Object.keys(FREQ_LOSE)[index]] / scissor;
+            }
+        }
+    }
+    
+    // Build transition table if previous result was a tie.
+    else {
+        let rock = FREQ_TIE['rockrock'] + FREQ_TIE['rockpaper'] + FREQ_TIE['rockscissor'];
+        let paper = FREQ_TIE['paperrock'] + FREQ_TIE['paperpaper'] + FREQ_TIE['paperscissor'];
+        let scissor = FREQ_TIE['scissorrock'] + FREQ_TIE['scissorpaper'] + FREQ_TIE['scissorscissor'];
+        let index = 0; 
+        for (let row = 0; row < 3; row++){
+            for (let col = 0; col < 3; col++){
+                if (Math.floor(index++ % 3) == 0)
+                    TRANSITION_TIE[row][col] = FREQ_TIE[Object.keys(FREQ_TIE)[index]] / rock;
+
+                if (Math.floor(index++ % 3) == 1)
+                    TRANSITION_TIE[row][col] = FREQ_TIE[Object.keys(FREQ_TIE)[index]] / paper;
+
+                if (Math.floor(index++ % 3) == 2)
+                    TRANSITION_TIE[row][col] = FREQ_TIE[Object.keys(FREQ_TIE)[index]] / scissor;
+            }
+        }
+    }
 }
 
 
@@ -150,13 +207,46 @@ function rpsGame(userInput){
         let previous_result = RESULTS.slice(-1)[0];
         updateFreqDist(previous_choice, player_choice, previous_result);
         updateTransitionTable(previous_result);
+
     }
 
     RESULTS.push(decision);
     console.log("WIN" , FREQ_WIN);
     console.log("LOSE" , FREQ_LOSE);
     console.log("TIE" , FREQ_TIE);
+    console.log("FREQUENCY WON", TRANSITION_WIN);
     console.log("--------------------") 
+
+
+
+    // let temp = 0; 
+    // for (let key in FREQ_TIE){
+        
+    //     if (Math.floor(temp++ % 3) == 0)
+    //         console.log(`${key}:${FREQ_TIE[key]}`)
+    //     if (Math.floor(temp % 3) == 2)
+    //         console.log(`${key}:${FREQ_TIE[key]}`)
+    //     if (Math.floor(temp++ % 3) == 2)
+    //         console.log(`${key}:${FREQ_TIE[key]}`)
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //------------------- UPDATE FRONTEND --------------------//
     // Update Last Five moves.
