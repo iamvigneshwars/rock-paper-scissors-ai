@@ -1,5 +1,5 @@
 // Choises that the user and AI can make
-const CHOICES = ["scissor", "rock", "paper"];
+const CHOICES = ["rock", "paper", "scissor"];
 // Store the scores of all the rounds.
 const SCORES = {"TIE" : 0, "WIN" : 0, "LOSE" : 0};
 // Store all the results throught out the game. 
@@ -78,6 +78,7 @@ const TRANSITION_TIE = [
     [0, 0, 0]
 ];
 
+
 // Delay inbetween plays
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -126,19 +127,20 @@ function updateTransitionTable(previous_result){
         let rock = FREQ_WIN['rockrock'] + FREQ_WIN['rockpaper'] + FREQ_WIN['rockscissor'];
         let paper = FREQ_WIN['paperrock'] + FREQ_WIN['paperpaper'] + FREQ_WIN['paperscissor'];
         let scissor = FREQ_WIN['scissorrock'] + FREQ_WIN['scissorpaper'] + FREQ_WIN['scissorscissor'];
-        let index = 0; 
         for (let row = 0; row < 3; row++){
             for (let col = 0; col < 3; col++){
-                if (Math.floor(index++ % 3) == 0)
-                    TRANSITION_WIN[row][col] = FREQ_WIN[Object.keys(FREQ_WIN)[index]] / rock;
+                let current_freq = FREQ_WIN[CHOICES[row] + CHOICES[col]];
+                if (row == 0)
+                    TRANSITION_WIN[row][col] = current_freq / rock;
 
-                if (Math.floor(index++ % 3) == 1)
-                    TRANSITION_WIN[row][col] = FREQ_WIN[Object.keys(FREQ_WIN)[index]] / paper;
+                if (row == 1)
+                    TRANSITION_WIN[row][col] = current_freq / paper;
 
-                if (Math.floor(index++ % 3) == 2)
-                    TRANSITION_WIN[row][col] = FREQ_WIN[Object.keys(FREQ_WIN)[index]] / scissor;
+                if (row == 2)
+                    TRANSITION_WIN[row][col] = current_freq / scissor;
             }
         }
+        return TRANSITION_WIN;
     }
     
     // Build transition table if player lost the previous round.
@@ -146,19 +148,20 @@ function updateTransitionTable(previous_result){
         let rock = FREQ_LOSE['rockrock'] + FREQ_LOSE['rockpaper'] + FREQ_LOSE['rockscissor'];
         let paper = FREQ_LOSE['paperrock'] + FREQ_LOSE['paperpaper'] + FREQ_LOSE['paperscissor'];
         let scissor = FREQ_LOSE['scissorrock'] + FREQ_LOSE['scissorpaper'] + FREQ_LOSE['scissorscissor'];
-        let index = 0;
         for (let row = 0; row < 3; row++){
             for (let col = 0; col < 3; col++){
-                if (Math.floor(index++ % 3) == 0)
-                    TRANSITION_LOSE[row][col] = FREQ_LOSE[Object.keys(FREQ_LOSE)[index]] / rock;
+                let current_freq = FREQ_LOSE[CHOICES[row] + CHOICES[col]];
+                if (row == 0)
+                    TRANSITION_LOSE[row][col] = current_freq / rock;
 
-                if (Math.floor(index++ % 3) == 1)
-                    TRANSITION_LOSE[row][col] = FREQ_LOSE[Object.keys(FREQ_LOSE)[index]] / paper;
+                if (row == 1)
+                    TRANSITION_LOSE[row][col] = current_freq / paper;
 
-                if (Math.floor(index++ % 3) == 2)
-                    TRANSITION_LOSE[row][col] = FREQ_LOSE[Object.keys(FREQ_LOSE)[index]] / scissor;
+                if (row == 2)
+                    TRANSITION_LOSE[row][col] = current_freq / scissor;
             }
         }
+        return TRANSITION_LOSE;
     }
     
     // Build transition table if previous result was a tie.
@@ -166,19 +169,20 @@ function updateTransitionTable(previous_result){
         let rock = FREQ_TIE['rockrock'] + FREQ_TIE['rockpaper'] + FREQ_TIE['rockscissor'];
         let paper = FREQ_TIE['paperrock'] + FREQ_TIE['paperpaper'] + FREQ_TIE['paperscissor'];
         let scissor = FREQ_TIE['scissorrock'] + FREQ_TIE['scissorpaper'] + FREQ_TIE['scissorscissor'];
-        let index = 0; 
         for (let row = 0; row < 3; row++){
             for (let col = 0; col < 3; col++){
-                if (Math.floor(index++ % 3) == 0)
-                    TRANSITION_TIE[row][col] = FREQ_TIE[Object.keys(FREQ_TIE)[index]] / rock;
+                let current_freq = FREQ_TIE[CHOICES[row] + CHOICES[col]];
+                if (row == 0)
+                    TRANSITION_TIE[row][col] = current_freq / rock;
 
-                if (Math.floor(index++ % 3) == 1)
-                    TRANSITION_TIE[row][col] = FREQ_TIE[Object.keys(FREQ_TIE)[index]] / paper;
+                if (row == 1)
+                    TRANSITION_TIE[row][col] = current_freq / paper;
 
-                if (Math.floor(index++ % 3) == 2)
-                    TRANSITION_TIE[row][col] = FREQ_TIE[Object.keys(FREQ_TIE)[index]] / scissor;
+                if (row == 2)
+                    TRANSITION_TIE[row][col] = current_freq / scissor;
             }
         }
+        return TRANSITION_TIE;
     }
 }
 
@@ -188,47 +192,52 @@ function rpsGame(userInput){
 
     // Get the user choice from the button clicked
     var player_choice = document.getElementById(userInput.id).id;
-
+    var ai_choice;
     // Generate a random choice for the AI 
-    const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
-    var ai_choice = CHOICES[random(0, 3)];
-
-    // Decide the winner based on the CHOICES (0: TIE, 1: WIN, 2: LOSE)
-    var decision = decideWinner(player_choice, ai_choice)
-    // Increament the score with corresponding result. 
-    SCORES[decision]++;
+    if (PLAYER_MOVES.length == 0){
+        const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+        ai_choice = CHOICES[random(0, 3)];
+    }
 
 
-    // console.log(decision);
+
+    var RPSprobs = [1/3, 1/3, 1/3];
 
     if (PLAYER_MOVES.length > 0){
 
         let previous_choice = PLAYER_MOVES.slice(-1)[0];
         let previous_result = RESULTS.slice(-1)[0];
         updateFreqDist(previous_choice, player_choice, previous_result);
-        updateTransitionTable(previous_result);
+        let transition_table = updateTransitionTable(previous_result);
+        ai_choice = Math.floor(Math.random() *100) + 1;
+        let index = {
+            "rock" : 0,
+            "paper" : 1,
+            "scissor" : 2
+        }
+        RPSprobs[0] = transition_table[index[previous_choice]][0];
+        RPSprobs[1] = transition_table[index[previous_choice]][1];
+        RPSprobs[2] = transition_table[index[previous_choice]][2];
+
+        let RangeR = RPSprobs[0] * 100;
+        let RangeP = RPSprobs[1] * 100 + RangeR;
+
+        if (ai_choice <= RangeR){
+            ai_choice = 'paper';
+        }
+        else if (ai_choice <= RangeP){
+            ai_choice = 'scissor';
+        }
+        else ai_choice = 'rock';
+
 
     }
+    // Decide the winner based on the CHOICES (0: TIE, 1: WIN, 2: LOSE)
+    var decision = decideWinner(player_choice, ai_choice)
+    // Increament the score with corresponding result. 
+    SCORES[decision]++;
 
     RESULTS.push(decision);
-    console.log("WIN" , FREQ_WIN);
-    console.log("LOSE" , FREQ_LOSE);
-    console.log("TIE" , FREQ_TIE);
-    console.log("FREQUENCY WON", TRANSITION_WIN);
-    console.log("--------------------") 
-
-
-
-    // let temp = 0; 
-    // for (let key in FREQ_TIE){
-        
-    //     if (Math.floor(temp++ % 3) == 0)
-    //         console.log(`${key}:${FREQ_TIE[key]}`)
-    //     if (Math.floor(temp % 3) == 2)
-    //         console.log(`${key}:${FREQ_TIE[key]}`)
-    //     if (Math.floor(temp++ % 3) == 2)
-    //         console.log(`${key}:${FREQ_TIE[key]}`)
-    // }
 
 
 
