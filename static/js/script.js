@@ -23,7 +23,9 @@ const FREQ_DIST_WIN = {
 // if the player had lost the previous round.
 const FREQ_DIST_LOSE = {
     'rockrock'   : 1, 'rockpaper'   : 1, 'rockscissor'   : 1,
-    'paperrock'  : 1, 'paperpaper'  : 1, 'paperscissor'  : 1, 'scissorrock': 1, 'scissorpaper': 1, 'scissorscissor': 1, }
+    'paperrock'  : 1, 'paperpaper'  : 1, 'paperscissor'  : 1,
+    'scissorrock': 1, 'scissorpaper': 1, 'scissorscissor': 1, 
+}
 
 // Frequency distribution of player choosing next move,
 // if the previous round was a tie.
@@ -257,7 +259,7 @@ function gamePlay(userInput){
     }
 
     if (decision == "LOSE"){
-        document.getElementById("result_message").innerHTML = "You Lost!";
+        document.getElementById("result_message").innerHTML = "You Lost, AI Won!";
         document.getElementById("result_message").style = "color:#ff0000";
 
     }
