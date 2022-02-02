@@ -68,34 +68,10 @@ const TRANSITION_TIE = [
 ];
 
 
-// Delay inbetween plays
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-// This function checks player choice and AI choice, and returns the winner.
-function decideWinner(player_choice, ai_choice){
-    // TIE situation
-    if (player_choice == ai_choice) return "TIE";
-
-    // Player win situations
-    if (player_choice == "rock" && ai_choice == "scissor") return "WIN";
-    if (player_choice == "paper" && ai_choice == "rock") return "WIN";
-    if (player_choice == "scissor" && ai_choice == "paper") return "WIN";
-
-    // Player lose situations
-    if (player_choice == "scissor" && ai_choice == "rock") return "LOSE";
-    if (player_choice == "rock" && ai_choice == "paper") return "LOSE";
-    if (player_choice == "paper" && ai_choice == "scissor") return "LOSE";
-
-}
-
-
 function updateFreqDist(previous_choice, current_choice, previous_result){
 
-
-    // If the player had won, lost or tied the previous round, update the 
-    // frequence of 
+    // If the player had won, lost or tied the previous round,
+    // increment the frequency of subsequent player moves. 
     if (previous_result == "WIN"){
         FREQ_DIST_WIN[previous_choice + current_choice]++;
     }
@@ -110,7 +86,6 @@ function updateFreqDist(previous_choice, current_choice, previous_result){
 }
 
 function updateTransitionTable(previous_result){
-
     // Build transition table if player won the previous round.
     if (previous_result == "WIN"){
         let rock = FREQ_DIST_WIN['rockrock'] + FREQ_DIST_WIN['rockpaper'] + FREQ_DIST_WIN['rockscissor'];
@@ -175,68 +150,78 @@ function updateTransitionTable(previous_result){
     }
 }
 
+// Check the player and AI choice and decide the winner.
+function decideWinner(player_choice, ai_choice){
+    // TIE situation
+    if (player_choice == ai_choice) return "TIE";
+
+    // Player win situations
+    if (player_choice == "rock" && ai_choice == "scissor") return "WIN";
+    if (player_choice == "paper" && ai_choice == "rock") return "WIN";
+    if (player_choice == "scissor" && ai_choice == "paper") return "WIN";
+
+    // Player lose situations
+    if (player_choice == "scissor" && ai_choice == "rock") return "LOSE";
+    if (player_choice == "rock" && ai_choice == "paper") return "LOSE";
+    if (player_choice == "paper" && ai_choice == "scissor") return "LOSE";
+
+}
+
+// Delay inbetween plays
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
 // main function
-function rpsGame(userInput){
+function gamePlay(userInput){
 
-    // Get the user choice from the button clicked
+    // Get the player choice from the button clicked
     var player_choice = document.getElementById(userInput.id).id;
     var ai_choice;
-    // Generate a random choice for the AI 
+
+    // For first round, generate a random choice for AI.
+
     if (PLAYER_MOVES.length == 0){
         const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
         ai_choice = CHOICES[random(0, 3)];
     }
 
-
+    // For later rounds, predict the player choice and play the move that counteracts the player choice..
     if (PLAYER_MOVES.length > 0){
 
         let previous_choice = PLAYER_MOVES.slice(-1)[0];
         let previous_result = RESULTS.slice(-1)[0];
+        // Update the Frequency distribution table.
         updateFreqDist(previous_choice, player_choice, previous_result);
+        // Update the transition probablities. 
         let transition_table = updateTransitionTable(previous_result);
-        ai_choice = Math.floor(Math.random() *100) + 1;
-
+        // Predicted next moves based on the previous move. (Markov Property)
         var predicted_probablities = transition_table[INDEX[previous_choice]]
+        // Get the index of move with highest probablity
         var predicted_move = predicted_probablities.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
-        console.log(predicted_probablities);
-        console.log(predicted_move);
 
-
+        // If the predicted move is ROCK, play PAPER to counteract
         if (predicted_move == 0)
             ai_choice = 'paper';
+        // If the predicted move is PAPER, play SCISSOR to counteract
         else if (predicted_move == 1)
             ai_choice = 'scissor';
+        // If the predicted move is SCISSOR, play ROCK to counteract
         else
             ai_choice = 'rock';
 
     }
-    // Decide the winner based on the CHOICES (0: TIE, 1: WIN, 2: LOSE)
+
+    // Decide the winner.
     var decision = decideWinner(player_choice, ai_choice)
+
     // Increament the score with corresponding result. 
     SCORES[decision]++;
-
     RESULTS.push(decision);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //------------------- UPDATE FRONTEND --------------------//
+
     // Update Last Five moves.
     for (let i = 1; i <= PLAYER_MOVES.length && i <= 5; i++){
         document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i].toUpperCase() 
@@ -284,5 +269,3 @@ function rpsGame(userInput){
     }
 
 }
-
-
