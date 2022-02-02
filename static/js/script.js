@@ -1,13 +1,20 @@
-var SCORES = {
-    "WIN" : 0,
-    "TIE" : 0, 
-    "LOSE" : 0 
-}
 
-var RESULTS = [];
-var PLAYER_MOVES = [];
-var AI_MOVES = [];
 
+
+
+// Choises that the user and AI can make
+const CHOICES = ["scissor", "rock", "paper"];
+// Possible game results.
+const DECISION = ["TIE", "WIN", "LOSE"];
+// Store the scores of all the rounds.
+const SCORES = {"TIE" : 0, "WIN" : 0, "LOSE" : 0};
+// Store all the results throught out the game. 
+const RESULTS = [];
+// store all the moves player makes.
+const PLAYER_MOVES = [];
+// Store all the moves AI makes.
+const AI_MOVES = [];
+// Keep track of round.
 var ROUND = 0;
 
 // Delay inbetween plays
@@ -15,7 +22,8 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-
+// This function checks player choice and AI choice, and returns the winner.
+// (0: TIE, 1: WIN, 2: LOSE)
 function decideWinner(player_choice, ai_choice){
     // TIE situation
     if (player_choice == ai_choice) return 0;
@@ -26,7 +34,6 @@ function decideWinner(player_choice, ai_choice){
     if (player_choice == "scissor" && ai_choice == "paper") return 1;
 
     // Player lose situations
-
     if (player_choice == "scissor" && ai_choice == "rock") return 2;
     if (player_choice == "rock" && ai_choice == "paper") return 2;
     if (player_choice == "paper" && ai_choice == "scissor") return 2;
@@ -36,36 +43,34 @@ function decideWinner(player_choice, ai_choice){
 // main function
 function rpsGame(userInput){
 
-    // Choises that the user and AI can make
-    var choices = ["scissor", "rock", "paper"];
     // Get the user choice from the button clicked
     var player_choice = document.getElementById(userInput.id).id;
 
-    var decision = ["TIE", "WIN", "LOSE"];
     // Generate a random choice for the AI 
     const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
-    var ai_choice = choices[random(0, 3)];
+    var ai_choice = CHOICES[random(0, 3)];
 
-
-    // Decide the winner based on the choices (0: TIE, 1: WIN, 2: LOSE)
+    // Decide the winner based on the CHOICES (0: TIE, 1: WIN, 2: LOSE)
     var winner = decideWinner(player_choice, ai_choice)
+
+    console.log(winner);
+
+
     // Increament the score with corresponding result
-    SCORES[decision[winner]]++;
+    SCORES[DECISION[winner]]++;
 
 
-    console.log("PLAYER: " , player_choice,"AI: " , ai_choice)
-    console.log("Decision: ", decision[winner]);
-    console.log("Score: ", SCORES[decision[winner]]);
+    // console.log("PLAYER: " , player_choice,"AI: " , ai_choice)
+    // console.log("Decision: ", DECISION[winner]);
+    // console.log("Score: ", SCORES[DECISION[winner]]);
 
-    // Store player and AI choices
+    // Store player and AI CHOICES
     // if (PLAYER_MOVES.length >= 1){
 
     //         console.log("Last Move: ", PLAYER_MOVES.slice(-1)[0])
     //     }
 
     for (let i = 1; i <= PLAYER_MOVES.length && i <= 5; i++){
-       
-        console.log(PLAYER_MOVES[PLAYER_MOVES.length - i])
         document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i].toUpperCase() 
                                                         + "  vs  " 
                                                         + AI_MOVES[AI_MOVES.length - i].toUpperCase();
