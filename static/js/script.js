@@ -2,7 +2,7 @@
 const CHOICES = ["rock", "paper", "scissor"];
 // Store the scores of all the rounds.
 const SCORES = {"TIE" : 0, "WIN" : 0, "LOSE" : 0};
-// Store all the results throught out the game. 
+// Store the results of all rounds.
 const RESULTS = [];
 // store all the moves player makes.
 const PLAYER_MOVES = [];
@@ -13,47 +13,36 @@ var ROUND = 0;
 
 // Frequency distribution of player choosing next move,
 // if the player had won the previous round.
-const FREQ_WIN = {
-    'rockrock' : 1,
-    'rockpaper' : 1,
-    'rockscissor' : 1,
-    'paperrock' : 1,
-    'paperpaper' : 1,
-    'paperscissor' : 1,
-    'scissorrock' : 1, 
-    'scissorpaper' : 1, 
-    'scissorscissor' : 1, 
+const FREQ_DIST_WIN = {
+    'rockrock'   : 1, 'rockpaper'   : 1, 'rockscissor'   : 1,
+    'paperrock'  : 1, 'paperpaper'  : 1, 'paperscissor'  : 1, 
+    'scissorrock': 1, 'scissorpaper': 1, 'scissorscissor': 1, 
 }
 
 // Frequency distribution of player choosing next move,
 // if the player had lost the previous round.
-const FREQ_LOSE = {
-    'rockrock' : 1,
-    'rockpaper' : 1,
-    'rockscissor' : 1,
-    'paperrock' : 1,
-    'paperpaper' : 1,
-    'paperscissor' : 1,
-    'scissorrock' : 1, 
-    'scissorpaper' : 1, 
-    'scissorscissor' : 1, 
-}
+const FREQ_DIST_LOSE = {
+    'rockrock'   : 1, 'rockpaper'   : 1, 'rockscissor'   : 1,
+    'paperrock'  : 1, 'paperpaper'  : 1, 'paperscissor'  : 1, 'scissorrock': 1, 'scissorpaper': 1, 'scissorscissor': 1, }
 
 // Frequency distribution of player choosing next move,
 // if the previous round was a tie.
-const FREQ_TIE = {
-    'rockrock' : 1,
-    'rockpaper' : 1,
-    'rockscissor' : 1,
-    'paperrock' : 1,
-    'paperpaper' : 1,
-    'paperscissor' : 1,
-    'scissorrock' : 1, 
-    'scissorpaper' : 1, 
-    'scissorscissor' : 1, 
+const FREQ_DIST_TIE = {
+    'rockrock'   : 1, 'rockpaper'   : 1, 'rockscissor'   : 1,
+    'paperrock'  : 1, 'paperpaper'  : 1, 'paperscissor'  : 1,
+    'scissorrock': 1, 'scissorpaper': 1, 'scissorscissor': 1, 
 }
 
-// Transition Probablities
+// Index of choise. Will be helpful later on.
+const INDEX = {
+    "rock" : 0,
+    "paper" : 1,
+    "scissor" : 2
+}
+
+// Transition Probablities gives the probablity of transition
+// from one state to the other state. In this case, the probablity
+// of player choosing next more based on the previous move.
 //     r  p  s
 //  r [0, 0, 0]
 //  p [0, 0, 0]  
@@ -108,15 +97,15 @@ function updateFreqDist(previous_choice, current_choice, previous_result){
     // If the player had won, lost or tied the previous round, update the 
     // frequence of 
     if (previous_result == "WIN"){
-        FREQ_WIN[previous_choice + current_choice]++;
+        FREQ_DIST_WIN[previous_choice + current_choice]++;
     }
 
     if (previous_result == "LOSE"){
-        FREQ_LOSE[previous_choice + current_choice]++;
+        FREQ_DIST_LOSE[previous_choice + current_choice]++;
     }
 
     if (previous_result == "TIE"){
-        FREQ_TIE[previous_choice + current_choice]++;
+        FREQ_DIST_TIE[previous_choice + current_choice]++;
     }
 }
 
@@ -124,12 +113,12 @@ function updateTransitionTable(previous_result){
 
     // Build transition table if player won the previous round.
     if (previous_result == "WIN"){
-        let rock = FREQ_WIN['rockrock'] + FREQ_WIN['rockpaper'] + FREQ_WIN['rockscissor'];
-        let paper = FREQ_WIN['paperrock'] + FREQ_WIN['paperpaper'] + FREQ_WIN['paperscissor'];
-        let scissor = FREQ_WIN['scissorrock'] + FREQ_WIN['scissorpaper'] + FREQ_WIN['scissorscissor'];
+        let rock = FREQ_DIST_WIN['rockrock'] + FREQ_DIST_WIN['rockpaper'] + FREQ_DIST_WIN['rockscissor'];
+        let paper = FREQ_DIST_WIN['paperrock'] + FREQ_DIST_WIN['paperpaper'] + FREQ_DIST_WIN['paperscissor'];
+        let scissor = FREQ_DIST_WIN['scissorrock'] + FREQ_DIST_WIN['scissorpaper'] + FREQ_DIST_WIN['scissorscissor'];
         for (let row = 0; row < 3; row++){
             for (let col = 0; col < 3; col++){
-                let current_freq = FREQ_WIN[CHOICES[row] + CHOICES[col]];
+                let current_freq = FREQ_DIST_WIN[CHOICES[row] + CHOICES[col]];
                 if (row == 0)
                     TRANSITION_WIN[row][col] = current_freq / rock;
 
@@ -145,12 +134,12 @@ function updateTransitionTable(previous_result){
     
     // Build transition table if player lost the previous round.
     else if (previous_result == "LOSE"){
-        let rock = FREQ_LOSE['rockrock'] + FREQ_LOSE['rockpaper'] + FREQ_LOSE['rockscissor'];
-        let paper = FREQ_LOSE['paperrock'] + FREQ_LOSE['paperpaper'] + FREQ_LOSE['paperscissor'];
-        let scissor = FREQ_LOSE['scissorrock'] + FREQ_LOSE['scissorpaper'] + FREQ_LOSE['scissorscissor'];
+        let rock = FREQ_DIST_LOSE['rockrock'] + FREQ_DIST_LOSE['rockpaper'] + FREQ_DIST_LOSE['rockscissor'];
+        let paper = FREQ_DIST_LOSE['paperrock'] + FREQ_DIST_LOSE['paperpaper'] + FREQ_DIST_LOSE['paperscissor'];
+        let scissor = FREQ_DIST_LOSE['scissorrock'] + FREQ_DIST_LOSE['scissorpaper'] + FREQ_DIST_LOSE['scissorscissor'];
         for (let row = 0; row < 3; row++){
             for (let col = 0; col < 3; col++){
-                let current_freq = FREQ_LOSE[CHOICES[row] + CHOICES[col]];
+                let current_freq = FREQ_DIST_LOSE[CHOICES[row] + CHOICES[col]];
                 if (row == 0)
                     TRANSITION_LOSE[row][col] = current_freq / rock;
 
@@ -166,12 +155,12 @@ function updateTransitionTable(previous_result){
     
     // Build transition table if previous result was a tie.
     else {
-        let rock = FREQ_TIE['rockrock'] + FREQ_TIE['rockpaper'] + FREQ_TIE['rockscissor'];
-        let paper = FREQ_TIE['paperrock'] + FREQ_TIE['paperpaper'] + FREQ_TIE['paperscissor'];
-        let scissor = FREQ_TIE['scissorrock'] + FREQ_TIE['scissorpaper'] + FREQ_TIE['scissorscissor'];
+        let rock = FREQ_DIST_TIE['rockrock'] + FREQ_DIST_TIE['rockpaper'] + FREQ_DIST_TIE['rockscissor'];
+        let paper = FREQ_DIST_TIE['paperrock'] + FREQ_DIST_TIE['paperpaper'] + FREQ_DIST_TIE['paperscissor'];
+        let scissor = FREQ_DIST_TIE['scissorrock'] + FREQ_DIST_TIE['scissorpaper'] + FREQ_DIST_TIE['scissorscissor'];
         for (let row = 0; row < 3; row++){
             for (let col = 0; col < 3; col++){
-                let current_freq = FREQ_TIE[CHOICES[row] + CHOICES[col]];
+                let current_freq = FREQ_DIST_TIE[CHOICES[row] + CHOICES[col]];
                 if (row == 0)
                     TRANSITION_TIE[row][col] = current_freq / rock;
 
@@ -199,7 +188,6 @@ function rpsGame(userInput){
         ai_choice = CHOICES[random(0, 3)];
     }
 
-    var RPSprobs = [1/3, 1/3, 1/3];
 
     if (PLAYER_MOVES.length > 0){
 
@@ -208,15 +196,11 @@ function rpsGame(userInput){
         updateFreqDist(previous_choice, player_choice, previous_result);
         let transition_table = updateTransitionTable(previous_result);
         ai_choice = Math.floor(Math.random() *100) + 1;
-        let index = {
-            "rock" : 0,
-            "paper" : 1,
-            "scissor" : 2
-        }
-        RPSprobs[0] = transition_table[index[previous_choice]][0];
-        RPSprobs[1] = transition_table[index[previous_choice]][1];
-        RPSprobs[2] = transition_table[index[previous_choice]][2];
-        var predicted_move = RPSprobs.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
+
+        var predicted_probablities = transition_table[INDEX[previous_choice]]
+        var predicted_move = predicted_probablities.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
+        console.log(predicted_probablities);
+        console.log(predicted_move);
 
 
         if (predicted_move == 0)
@@ -298,7 +282,6 @@ function rpsGame(userInput){
         document.getElementById("result_message").style = "color:#ffee00";
 
     }
-
 
 }
 
