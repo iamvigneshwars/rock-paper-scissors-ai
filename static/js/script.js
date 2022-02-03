@@ -232,7 +232,6 @@ function gamePlay(userInput){
         updateFreqDist(previous_choice, player_choice, previous_result);
         // Update the transition probablities. 
         transition_table = updateTransitionTable(previous_result);
-        // console.log(predicted_probablities)
 
     }
 
@@ -306,9 +305,5 @@ function gamePlay(userInput){
 
     if (decision == "TIE")
         document.getElementById("robot").src = "static/images/robot"+ random(7, 10) +".png";
-
-    var win_precentage = SCORES.WIN / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
-    var lose_precentage = SCORES.LOSE / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
-    var tie_precentage = SCORES.TIE / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
 
 }
