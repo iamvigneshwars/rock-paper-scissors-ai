@@ -208,6 +208,7 @@ function gamePlay(userInput){
             predicted_probablities = TRANSITION_LOSE[INDEX[previous_choice]];
         else 
             predicted_probablities = TRANSITION_TIE[INDEX[previous_choice]];
+
         // Get the index of move with highest probablity
         var predicted_move = predicted_probablities.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
         // If the predicted move is ROCK, play PAPER to counteract
@@ -224,13 +225,14 @@ function gamePlay(userInput){
         decision = decideWinner(player_choice, ai_choice)
 
         // Update the Frequency distribution table.
+        // EX: When previous result was WIN and previous player choice
+        // was rock, then update what the player chose to play for current move.
         updateFreqDist(previous_choice, player_choice, previous_result);
         // Update the transition probablities. 
         transition_table = updateTransitionTable(previous_result);
         // console.log(predicted_probablities)
 
     }
-
 
     // Increament the score with corresponding result. 
     SCORES[decision]++;
