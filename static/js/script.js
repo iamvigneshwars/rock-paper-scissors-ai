@@ -174,6 +174,9 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+// Generate Random numbers
+const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+
 // main function
 function gamePlay(userInput){
 
@@ -188,7 +191,6 @@ function gamePlay(userInput){
     // For first round, generate a random choice for AI.
 
     if (PLAYER_MOVES.length == 0){
-        const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
         ai_choice = CHOICES[random(0, 3)];
         decision = decideWinner(player_choice, ai_choice);
     }
@@ -238,7 +240,6 @@ function gamePlay(userInput){
     SCORES[decision]++;
     RESULTS.push(decision);
 
-
     //------------------- UPDATE FRONTEND --------------------//
 
     // Update Last Five moves.
@@ -246,6 +247,12 @@ function gamePlay(userInput){
         document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i].toUpperCase() 
                                                         + "  vs  " 
                                                         + AI_MOVES[AI_MOVES.length - i].toUpperCase();
+        if (RESULTS[RESULTS.length - i -1] == "WIN")
+            document.getElementById("winner_" + i).innerHTML = "PLAYER";
+        else if (RESULTS[RESULTS.length - i -1] == "LOSE")
+            document.getElementById("winner_" + i).innerHTML = "AI";
+        else document.getElementById("winner_" + i).innerHTML = "TIE";
+            
     }
 
     PLAYER_MOVES.push(player_choice);
@@ -286,6 +293,19 @@ function gamePlay(userInput){
         document.getElementById("result_message").style = "color:#ffee00";
 
     }
+
+
+
+    // Update Robot emoji
+
+    if (decision == "WIN")
+        document.getElementById("robot").src = "static/images/robot"+ random(1, 4) +".png";
+
+    if (decision == "LOSE")
+        document.getElementById("robot").src = "static/images/robot"+ random(4, 7) +".png";
+
+    if (decision == "TIE")
+        document.getElementById("robot").src = "static/images/robot"+ random(7, 10) +".png";
 
     var win_precentage = SCORES.WIN / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
     var lose_precentage = SCORES.LOSE / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
