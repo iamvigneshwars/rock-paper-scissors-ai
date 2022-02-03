@@ -106,7 +106,7 @@ function updateTransitionTable(previous_result){
                     TRANSITION_WIN[row][col] = current_freq / scissor;
             }
         }
-        return TRANSITION_WIN;
+        // return TRANSITION_WIN;
     }
     
     // Build transition table if player lost the previous round.
@@ -127,7 +127,7 @@ function updateTransitionTable(previous_result){
                     TRANSITION_LOSE[row][col] = current_freq / scissor;
             }
         }
-        return TRANSITION_LOSE;
+        // return TRANSITION_LOSE;
     }
     
     // Build transition table if previous result was a tie.
@@ -148,7 +148,7 @@ function updateTransitionTable(previous_result){
                     TRANSITION_TIE[row][col] = current_freq / scissor;
             }
         }
-        return TRANSITION_TIE;
+        // return TRANSITION_TIE;
     }
 }
 
@@ -180,12 +180,17 @@ function gamePlay(userInput){
     // Get the player choice from the button clicked
     var player_choice = document.getElementById(userInput.id).id;
     var ai_choice;
+    var decision;
+    var transition_table = FREQ_DIST_LOSE
+    var predicted_probablities ;
+    
 
     // For first round, generate a random choice for AI.
 
     if (PLAYER_MOVES.length == 0){
         const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
         ai_choice = CHOICES[random(0, 3)];
+        decision = decideWinner(player_choice, ai_choice);
     }
 
     // For later rounds, predict the player choice and play the move that counteracts the player choice..
@@ -193,15 +198,18 @@ function gamePlay(userInput){
 
         let previous_choice = PLAYER_MOVES.slice(-1)[0];
         let previous_result = RESULTS.slice(-1)[0];
-        // Update the Frequency distribution table.
-        updateFreqDist(previous_choice, player_choice, previous_result);
-        // Update the transition probablities. 
-        let transition_table = updateTransitionTable(previous_result);
+        if (PLAYER_MOVES.length == 1)
+            var predicted_probablities = [1/3, 1/3, 1/3]; // Equal probablities
+
         // Predicted next moves based on the previous move. (Markov Property)
-        var predicted_probablities = transition_table[INDEX[previous_choice]]
+        else if (previous_result == "WIN")
+            predicted_probablities = TRANSITION_WIN[INDEX[previous_choice]];
+        else if (previous_result == "LOSE")
+            predicted_probablities = TRANSITION_LOSE[INDEX[previous_choice]];
+        else 
+            predicted_probablities = TRANSITION_TIE[INDEX[previous_choice]];
         // Get the index of move with highest probablity
         var predicted_move = predicted_probablities.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
-
         // If the predicted move is ROCK, play PAPER to counteract
         if (predicted_move == 0)
             ai_choice = 'paper';
@@ -212,10 +220,17 @@ function gamePlay(userInput){
         else
             ai_choice = 'rock';
 
+        // Decide the winner.
+        decision = decideWinner(player_choice, ai_choice)
+
+        // Update the Frequency distribution table.
+        updateFreqDist(previous_choice, player_choice, previous_result);
+        // Update the transition probablities. 
+        transition_table = updateTransitionTable(previous_result);
+        // console.log(predicted_probablities)
+
     }
 
-    // Decide the winner.
-    var decision = decideWinner(player_choice, ai_choice)
 
     // Increament the score with corresponding result. 
     SCORES[decision]++;
@@ -273,10 +288,5 @@ function gamePlay(userInput){
     var win_precentage = SCORES.WIN / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
     var lose_precentage = SCORES.LOSE / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
     var tie_precentage = SCORES.TIE / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
-
-    console.log(Math.round((win_precentage + Number.EPSILON) * 100));
-    console.log(Math.round((lose_precentage + Number.EPSILON) * 100));
-    console.log(Math.round((tie_precentage + Number.EPSILON) * 100));
-
 
 }
