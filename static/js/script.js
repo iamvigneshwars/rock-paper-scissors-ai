@@ -270,4 +270,13 @@ function gamePlay(userInput){
 
     }
 
+    var win_precentage = SCORES.WIN / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
+    var lose_precentage = SCORES.LOSE / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
+    var tie_precentage = SCORES.TIE / (SCORES.WIN + SCORES.LOSE + SCORES.TIE);
+
+    console.log(Math.round((win_precentage + Number.EPSILON) * 100));
+    console.log(Math.round((lose_precentage + Number.EPSILON) * 100));
+    console.log(Math.round((tie_precentage + Number.EPSILON) * 100));
+
+
 }

@@ -23,6 +23,7 @@
     <br><br>
 
     <div class="container">
+                    <img src="static/images/robot0.png" class="rounded mx-auto d-block" id="robo_emoji" hight="80" width="80" alt="...">
         <br>
         <div class="gamecontainer text-white bg-dark">
             <br>
@@ -51,7 +52,7 @@
                     <p id="ai_score" class="text-center">0</p>
                 </div>
             </div>
-            <p class='text-center'><small id="result_message" style="color:#ffffff">Can you win?</small></p>
+            <p class='text-center'><small id="result_message" style="color:#ffffff">Can beat the AI?</small></p>
 
             <div class="row ">
                 <div class="col ">
@@ -59,14 +60,13 @@
                     <img src="static/images/rest.png" class="img-fluid mx-auto d-block" id="user_play" alt="...">
                 </div>
 
-                <div class="col ">
-                    <p class='text-center'><small>LAST FIVE MOVES</small></p>
+                <!-- <div class="col "> <p class='text-center'><small>LAST FIVE MOVES</small></p>
                     <p style="font-size:13px;" id="last_1" class='text-muted text-center'>- - - - - - - -</p>
                     <p style="font-size:13px;" id="last_2" class='text-muted text-center'>- - - - - - - -</p>
                     <p style="font-size:13px;" id="last_3" class='text-muted text-center'>- - - - - - - -</p>
                     <p style="font-size:13px;" id="last_4" class='text-muted text-center'>- - - - - - - -</p>
                     <p style="font-size:13px;" id="last_5" class='text-muted text-center'>- - - - - - - -</p>
-                </div>
+                </div> -->
 
                 <div class="col ">
                     <img src="static/images/rest_ai.png" class="img-fluid mx-auto d-block" id="ai_play" alt="...">
@@ -86,6 +86,14 @@
                         onclick="gamePlay(this)">
                 </button>
             </div>
+            <hr>
+                <div class="col "> <p class='text-center'><small>LAST FIVE MOVES</small></p>
+                    <p style="font-size:13px;" id="last_1" class='text-muted text-center'>- - - - - - - -</p>
+                    <p style="font-size:13px;" id="last_2" class='text-muted text-center'>- - - - - - - -</p>
+                    <p style="font-size:13px;" id="last_3" class='text-muted text-center'>- - - - - - - -</p>
+                    <p style="font-size:13px;" id="last_4" class='text-muted text-center'>- - - - - - - -</p>
+                    <p style="font-size:13px;" id="last_5" class='text-muted text-center'>- - - - - - - -</p>
+                </div>
         </div>
 
         <br>
