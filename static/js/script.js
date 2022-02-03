@@ -35,12 +35,8 @@ const FREQ_DIST_TIE = {
     'scissorrock': 1, 'scissorpaper': 1, 'scissorscissor': 1, 
 }
 
-// Index of choise. Will be helpful later on.
-const INDEX = {
-    "rock" : 0,
-    "paper" : 1,
-    "scissor" : 2
-}
+// Index of choise. Will be helpful later.
+const INDEX = {"rock" : 0,"paper" : 1,"scissor" : 2}
 
 // Transition Probablities gives the probablity of transition
 // from one state to the other state. In this case, the probablity
@@ -88,7 +84,7 @@ function updateFreqDist(previous_choice, current_choice, previous_result){
 }
 
 function updateTransitionTable(previous_result){
-    // Build transition table if player won the previous round.
+    // Update transition table if player won the previous round.
     if (previous_result == "WIN"){
         let rock = FREQ_DIST_WIN['rockrock'] + FREQ_DIST_WIN['rockpaper'] + FREQ_DIST_WIN['rockscissor'];
         let paper = FREQ_DIST_WIN['paperrock'] + FREQ_DIST_WIN['paperpaper'] + FREQ_DIST_WIN['paperscissor'];
@@ -106,10 +102,9 @@ function updateTransitionTable(previous_result){
                     TRANSITION_WIN[row][col] = current_freq / scissor;
             }
         }
-        // return TRANSITION_WIN;
     }
     
-    // Build transition table if player lost the previous round.
+    // Update transition table if player lost the previous round.
     else if (previous_result == "LOSE"){
         let rock = FREQ_DIST_LOSE['rockrock'] + FREQ_DIST_LOSE['rockpaper'] + FREQ_DIST_LOSE['rockscissor'];
         let paper = FREQ_DIST_LOSE['paperrock'] + FREQ_DIST_LOSE['paperpaper'] + FREQ_DIST_LOSE['paperscissor'];
@@ -127,10 +122,9 @@ function updateTransitionTable(previous_result){
                     TRANSITION_LOSE[row][col] = current_freq / scissor;
             }
         }
-        // return TRANSITION_LOSE;
     }
     
-    // Build transition table if previous result was a tie.
+    // Update transition table if previous result was a tie.
     else {
         let rock = FREQ_DIST_TIE['rockrock'] + FREQ_DIST_TIE['rockpaper'] + FREQ_DIST_TIE['rockscissor'];
         let paper = FREQ_DIST_TIE['paperrock'] + FREQ_DIST_TIE['paperpaper'] + FREQ_DIST_TIE['paperscissor'];
@@ -148,7 +142,6 @@ function updateTransitionTable(previous_result){
                     TRANSITION_TIE[row][col] = current_freq / scissor;
             }
         }
-        // return TRANSITION_TIE;
     }
 }
 
@@ -184,12 +177,10 @@ function gamePlay(userInput){
     var player_choice = document.getElementById(userInput.id).id;
     var ai_choice;
     var decision;
-    var transition_table = FREQ_DIST_LOSE
     var predicted_probablities ;
     
 
     // For first round, generate a random choice for AI.
-
     if (PLAYER_MOVES.length == 0){
         ai_choice = CHOICES[random(0, 3)];
         decision = decideWinner(player_choice, ai_choice);
@@ -201,7 +192,7 @@ function gamePlay(userInput){
         let previous_choice = PLAYER_MOVES.slice(-1)[0];
         let previous_result = RESULTS.slice(-1)[0];
         if (PLAYER_MOVES.length == 1)
-            var predicted_probablities = [1/3, 1/3, 1/3]; // Equal probablities
+            var predicted_probablities = [1/3, 1/3, 1/3]; // Equal probablities initially
 
         // Predicted next moves based on the previous move. (Markov Property)
         else if (previous_result == "WIN")
@@ -243,9 +234,11 @@ function gamePlay(userInput){
 
     // Update Last Five moves.
     for (let i = 1; i <= PLAYER_MOVES.length && i <= 5; i++){
+
         document.getElementById("last_" + i).innerHTML = PLAYER_MOVES[PLAYER_MOVES.length -i].toUpperCase() 
                                                         + "  vs  " 
                                                         + AI_MOVES[AI_MOVES.length - i].toUpperCase();
+
         if (RESULTS[RESULTS.length - i -1] == "WIN")
             document.getElementById("winner_" + i).innerHTML = "PLAYER";
         else if (RESULTS[RESULTS.length - i -1] == "LOSE")
@@ -292,9 +285,6 @@ function gamePlay(userInput){
         document.getElementById("result_message").style = "color:#ffee00";
 
     }
-
-
-
     // Update Robot emoji
 
     if (decision == "WIN")

@@ -23,13 +23,16 @@
     <br><br>
 
     <div class="container">
-        <img id = "robot" src="static/images/robot5.png" class="rounded mx-auto d-block" id="robo_emoji" hight="80" width="80"
-            alt="...">
+        <!--Robot Emoji-->
+        <img id="robot" src="static/images/robot5.png" class="rounded mx-auto d-block" id="robo_emoji" hight="80"
+            width="80" alt="...">
         <br>
+        <!--gamecontainer-->
         <div class="gamecontainer text-white bg-dark">
             <br>
             <p id="round" class="text-center">ROUND 0</p>
 
+            <!--Stats-->
             <div class="row">
                 <div class="col">
                     <p class="fw-light text-center">PLAYER-<small>WINS</small></p>
@@ -41,7 +44,8 @@
                     <p class="fw-light text-center">AI-<small>WINS</small></p>
                 </div>
             </div>
-
+            
+            <!--Scores-->
             <div class="row">
                 <div class="col">
                     <p id="player_score" class="text-center">0</p>
@@ -55,25 +59,22 @@
             </div>
             <p class='text-center'><small id="result_message" style="color:#ffffff">Can beat the AI?</small></p>
 
+            <!--User and AI move images-->
             <div class="row ">
                 <div class="col ">
-
+                    <!--USER-->
                     <img src="static/images/rest.png" class="img-fluid mx-auto d-block" id="user_play" alt="...">
                 </div>
 
-                <!-- <div class="col "> <p class='text-center'><small>LAST FIVE MOVES</small></p>
-                    <p style="font-size:13px;" id="last_1" class='text-muted text-center'>- - - - - - - -</p>
-                    <p style="font-size:13px;" id="last_2" class='text-muted text-center'>- - - - - - - -</p>
-                    <p style="font-size:13px;" id="last_3" class='text-muted text-center'>- - - - - - - -</p>
-                    <p style="font-size:13px;" id="last_4" class='text-muted text-center'>- - - - - - - -</p>
-                    <p style="font-size:13px;" id="last_5" class='text-muted text-center'>- - - - - - - -</p>
-                </div> -->
-
                 <div class="col ">
+                    <!--AI-->
                     <img src="static/images/rest_ai.png" class="img-fluid mx-auto d-block" id="ai_play" alt="...">
                 </div>
+
             </div> <br>
 
+
+            <!--User Play Buttons-->
             <div class="mx-auto" style="width: 250px;">
                 <button class="btn btn-default">
                     <img id="rock" src="static/images/rock_icon.png" height=50 width=50 alt="" onclick="gamePlay(this)">
@@ -87,38 +88,31 @@
                         onclick="gamePlay(this)">
                 </button>
             </div>
+
             <div class="container">
                 <hr>
             </div>
-            <div class = "row">
+
+            <!--Previous rounds stats-->
+            <div class="row">
                 <p class='text-center'><small>PREVIOURS ROUNDS STATS</small></p>
 
-            <div class="col ">
-                <p style="font-size:13px;"  class='text-muted text-center'>History</p>
-                <p style="font-size:13px;" id="percent_1" class='text-muted text-center'>1 Round Ago.....</p>
-                <p style="font-size:13px;" id="percent_1" class='text-muted text-center'>2 Rounds Ago.....</p>
-                <p style="font-size:13px;" id="percent_1" class='text-muted text-center'>3 Rounds Ago.....</p>
-                <p style="font-size:13px;" id="percent_1" class='text-muted text-center'>4 Rounds Ago.....</p>
-                <p style="font-size:13px;" id="percent_1" class='text-muted text-center'>5 Rounds Ago.....</p>
-            </div>
-
-            <div class="col ">
-                <p style="font-size:16px;" class='text-muted text-center'>Moves</p>
-                <p style="font-size:13px;" id="last_1" class='text-muted text-center'> - - - - - - - -</p>
-                <p style="font-size:13px;" id="last_2" class='text-muted text-center'> - - - - - - - -</p>
-                <p style="font-size:13px;" id="last_3" class='text-muted text-center'> - - - - - - - -</p>
-                <p style="font-size:13px;" id="last_4" class='text-muted text-center'> - - - - - - - -</p>
-                <p style="font-size:13px;" id="last_5" class='text-muted text-center'> - - - - - - - -</p>
-            </div>
-            <div class="col ">
-                <p style="font-size:13px;" class='text-muted text-center'>Winner</p>
-                <p style="font-size:13px;" id="winner_1" class='text-muted text-center'>- - - - - - - -</p>
-                <p style="font-size:13px;" id="winner_2" class='text-muted text-center'>- - - - - - - -</p>
-                <p style="font-size:13px;" id="winner_3" class='text-muted text-center'>- - - - - - - -</p>
-                <p style="font-size:13px;" id="winner_4" class='text-muted text-center'>- - - - - - - -</p>
-                <p style="font-size:13px;" id="winner_5" class='text-muted text-center'>- - - - - - - -</p>
-            </div>
-
+                <div class="col ">
+                    <p style="font-size:16px;" class='text-muted text-center'>Moves</p>
+                    <p style="font-size:13px;" id="last_1" class='text-muted text-center'> - - - - - - - -</p>
+                    <p style="font-size:13px;" id="last_2" class='text-muted text-center'> - - - - - - - -</p>
+                    <p style="font-size:13px;" id="last_3" class='text-muted text-center'> - - - - - - - -</p>
+                    <p style="font-size:13px;" id="last_4" class='text-muted text-center'> - - - - - - - -</p>
+                    <p style="font-size:13px;" id="last_5" class='text-muted text-center'> - - - - - - - -</p>
+                </div>
+                <div class="col ">
+                    <p style="font-size:13px;" class='text-muted text-center'>Winner</p>
+                    <p style="font-size:13px;" id="winner_1" class='text-muted text-center'>- - - - - - - -</p>
+                    <p style="font-size:13px;" id="winner_2" class='text-muted text-center'>- - - - - - - -</p>
+                    <p style="font-size:13px;" id="winner_3" class='text-muted text-center'>- - - - - - - -</p>
+                    <p style="font-size:13px;" id="winner_4" class='text-muted text-center'>- - - - - - - -</p>
+                    <p style="font-size:13px;" id="winner_5" class='text-muted text-center'>- - - - - - - -</p>
+                </div>
 
             </div>
         </div>
