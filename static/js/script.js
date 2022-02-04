@@ -260,13 +260,15 @@ function gamePlay(userInput){
     document.getElementById("ai_score").innerHTML = SCORES.LOSE;
 
 
-    // Update Player image
+    // Update Player and AI image
     document.getElementById("user_play").src = "static/images/rest.png"
-    sleep(100).then(() => { document.getElementById("user_play").src = "static/images/" + player_choice + ".png"; });
-
-    // Update AI image
     document.getElementById("ai_play").src = "static/images/rest_ai.png";
-    sleep(100).then(() => { document.getElementById("ai_play").src = "static/images/" + ai_choice +"_ai" + ".png"; });
+
+    sleep(100).then(() => {
+        document.getElementById("ai_play").src = "static/images/" + ai_choice +"_ai" + ".png";
+        document.getElementById("user_play").src = "static/images/" + player_choice + ".png";
+
+    });
 
     // Update Result message
     if (decision == "WIN"){
