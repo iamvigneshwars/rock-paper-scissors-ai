@@ -162,11 +162,6 @@ function decideWinner(player_choice, ai_choice){
 
 }
 
-// Delay inbetween plays
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
 // Generate Random numbers
 const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
@@ -264,11 +259,11 @@ function gamePlay(userInput){
     document.getElementById("user_play").src = "static/images/rest.png"
     document.getElementById("ai_play").src = "static/images/rest_ai.png";
 
-    sleep(100).then(() => {
+    setTimeout(function (){
+
         document.getElementById("ai_play").src = "static/images/" + ai_choice +"_ai" + ".png";
         document.getElementById("user_play").src = "static/images/" + player_choice + ".png";
-
-    });
+    }, 100)
 
     // Update Result message
     if (decision == "WIN"){
